@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://nuxeo.com/schemas/demo/showroom/location"
+  xmlns:nxs="http://nuxeo.com/schemas/demo/showroom/location" xmlns:nxsv="http://www.nuxeo.org/ecm/schemas/core/validation/">
+
+  <xs:element name="latitude" type="xs:double" nillable="false" nxsv:nillable="false">
+    <xs:simpleType>
+      <xs:restriction base="xs:double">
+        <xs:minInclusive value="-90.0" />
+        <xs:maxInclusive value="90.0" />
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:element>
+
+  <xs:element name="longitude" type="xs:double" nillable="false" nxsv:nillable="false">
+    <xs:simpleType>
+      <xs:restriction base="xs:double">
+        <xs:minInclusive value="-180.0" />
+        <xs:maxInclusive value="180.0" />
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:element>
+
+</xs:schema>

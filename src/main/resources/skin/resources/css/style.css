@@ -1,0 +1,142 @@
+html {
+	background-color: #f1f4f8;
+}
+body {
+	margin: 0;
+	padding: 0;
+}
+body * {
+	font-family: Aregular, Arial;
+	font-size: 110%;
+}
+a:link, a:visited {
+	text-decoration: none;
+}
+ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+header {
+	height: 120px;
+	background-color: white;
+}
+header img {
+	display: inline-block;
+	float: left;
+	margin-top: 30px;
+}
+header h1 {
+	display: inline-block;
+	float: right;
+	margin-top: 70px;
+	font-size: 30px;
+	font-style: italic;
+}
+.body {
+	padding: 40px 10px 10px 10px;
+	background-color: white;
+	border-top: 1px solid #f1f4f8;
+}
+.body .product {
+	margin-bottom: 40px;
+	border-bottom: 1px solid #EEE;
+	padding: 0px 0 10px 200px;
+	min-height: 220px;
+	background: url(../img/kitchen.jpg) top left no-repeat;
+	background-size:  180px auto;
+}
+.body .product h2, .body .product a {
+	color: rgb(0, 173, 255);
+}
+.body .product h2 {
+	font-size: 25px;
+}
+.body .product p {
+	font-size: 20px;
+}
+footer {
+	background: #404040;
+	font-size: 85%;
+	font-size: 14px;
+	line-height: 24px;
+	color: #fff;
+	padding: 40px 0;
+	min-height: 200px;
+}
+footer > div, .body, header > div {
+	width: 900px;
+	margin-right: auto;
+	margin-left: auto;
+}
+footer span {
+  display: inline-block;
+  float: left;
+}
+footer li {
+  display: inline-block;
+  float: right;
+  margin-left: 10px;
+}
+.showroom {
+	font-size: 13px;
+	padding: 20px 10px;
+	background-color: #17384e;
+	color: white;
+}
+.showroom h3 {
+	display: inline-block;
+	font-size: 17px;
+	padding: 0;
+	margin: 5px 0 10px 5px;
+	font-weight: normal;
+}
+.showroom form {
+	margin-bottom: 10px;
+}
+.showroom input {
+	float: right;
+}
+.showroom .picture {
+	display: inline-block;
+	height: 120px;
+	width: 120px;
+	line-height: 120px;
+	text-align: center;
+	margin: 5px;
+	border: 1px solid #CCC;
+	background-color: white;
+}
+.showroom .picture img {
+	max-width: 110px;
+	max-height: 110px;
+	vertical-align: middle;
+}
+.showroom .picture .rollover {
+	display: none;
+	background-color: white;
+	border-radius: 5px;
+	padding: 10px 20px;
+	width: 350px;
+	position: absolute;
+	margin-left: 110px;
+	margin-top: -10px;
+	line-height: 20px;
+	border: 1px solid #CCC;
+}
+.showroom .picture:HOVER .rollover {
+	display: block;
+}
+.showroom .picture .rollover * {
+	font-size: 16px !important;
+	color: black;
+	font-weight: normal;
+	text-align: left;
+}
+.showroom .picture .rollover b {
+	font-weight: bold;
+}
+.showroom .picture .rollover s {
+	text-decoration: none;
+	font-size: 13px;
+}

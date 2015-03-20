@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+
+<component name="org.nuxeo.demo.collab.showroom.productService" version="1.0.0">
+
+  <implementation class="org.nuxeo.demo.collab.showroom.product.fake.FakeProductServiceImpl" />
+  <service>
+    <provide interface="org.nuxeo.demo.collab.showroom.product.ProductService" />
+  </service>
+
+</component>

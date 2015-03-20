@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+
+<component name="org.nuxeo.demo.collab.showroom.resolver">
+
+  <extension target="org.nuxeo.ecm.core.schema.ObjectResolverService" point="resolvers">
+    <resolver type="productResolver" class="org.nuxeo.demo.collab.showroom.product.ProductResolver" />
+  </extension>
+
+</component>

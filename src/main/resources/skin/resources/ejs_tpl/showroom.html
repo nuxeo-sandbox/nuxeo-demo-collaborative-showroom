@@ -1,0 +1,40 @@
+<div class="showroom" id="showroom_<%= product %>">
+  <form enctype="multipart/form-data">
+  	<h3>Contribute! Share your pictures:</h3>
+  	<input name="content" type="file" onchange="sendImageFor(<%= product %>, this.files[0]);" />
+  </form>
+  <div>
+    <%
+    for (var i = 0; i < entries.length; i++) {
+    	var entry = entries[i];
+    	if (entry.properties["file:content"] != null) {
+    		var link = entry.properties["file:content"].data;
+    		var product = entry.properties["pdt:product"];
+    		var file = entry.properties["file:content"];
+    		var fileSizeMB = Math.round(100*parseInt(file.length)/(1024*1024))/100;
+    		var creator = entry.properties["dc:creator"];
+    		var subject = entry.properties["dc:subjects"][0];
+    %>
+			<a href="<%= link %>" class="picture" target="_blank">
+				<img src="<%= link %>" />
+				<div class="rollover">
+				  <p>
+				  	<s><%=subject.properties.parent.properties.label_en%> / <%=subject.properties.label_en%></s>
+				  </p>
+				  <p>
+				    <b><%=product.reference%> - <%=product.title%></b>
+				  </p>
+				  <p>
+				    <b><%=file.name%></b> <s>(<%=file["mime-type"]%> <%=fileSizeMB%>MB)</s>
+				  </p>
+				  <p>
+				  	<s>Shared by <%= creator.properties.email %></s>
+				  </p>
+				</div>
+			</a>
+    <%
+    	}
+    }
+    %>
+  </div>
+</div>

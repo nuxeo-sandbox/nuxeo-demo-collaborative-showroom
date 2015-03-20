@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+
+<component name="org.nuxeo.demo.collab.showroom.types-contrib" version="1.0">
+
+  <extension target="org.nuxeo.ecm.core.schema.TypeService" point="schema">
+    <schema name="location" prefix="loc" src="schemas/location.xsd" />
+    <schema name="productReference" prefix="pdt" src="schemas/productReference.xsd" />
+  </extension>
+
+  <extension target="org.nuxeo.ecm.core.schema.TypeService" point="doctype">
+
+    <doctype name="ShowroomEntry" extends="File">
+      <facet name="Versionable" />
+      <schema name="dublincore" />
+      <schema name="location" />
+      <schema name="productReference" />
+    </doctype>
+
+  </extension>
+
+</component>

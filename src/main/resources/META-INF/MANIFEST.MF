@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 1
+Bundle-Name: nuxeo-collaborative-showroom 
+Bundle-SymbolicName: org.nuxeo.demo.collab.showroom;singleton:=true
+Bundle-Vendor: Nuxeo
+Bundle-Version: 1.0.0
+Nuxeo-WebModule: org.nuxeo.demo.collab.showroom.api.ShowroomApp;name=showroom;package=org/nuxeo/demo/collab/showroom;headless=true
+Nuxeo-Component: OSGI-INF/auth-contrib.xml, 
+ OSGI-INF/core-type-contrib.xml,
+ OSGI-INF/FakeProductService.xml,
+ OSGI-INF/layout-contrib.xml,
+ OSGI-INF/marshallers-contrib.xml,
+ OSGI-INF/product-resolver-contrib.xml,
+ OSGI-INF/structure-template-contrib.xml
