@@ -2,7 +2,9 @@
 <component name="org.nuxeo.demo.collab.showroom.marshallers" version="1.0.0">
   <extension target="org.nuxeo.ecm.core.io.MarshallerRegistry" point="marshallers">
     <register class="org.nuxeo.demo.collab.showroom.product.ProductJsonWriter" enable="true" />
+    <register class="org.nuxeo.demo.collab.showroom.product.ProductJsonReader" enable="true" />
     <register class="org.nuxeo.demo.collab.showroom.product.ProductListJsonWriter" enable="true" />
+    <register class="org.nuxeo.demo.collab.showroom.product.ProductListJsonReader" enable="true" />
     <register class="org.nuxeo.demo.collab.showroom.api.ShowroomEntriesByProductJsonWriter" enable="true" />
     <register class="org.nuxeo.demo.collab.showroom.api.ShowroomEntryUrlJsonEnricher" enable="true" />
   </extension>
