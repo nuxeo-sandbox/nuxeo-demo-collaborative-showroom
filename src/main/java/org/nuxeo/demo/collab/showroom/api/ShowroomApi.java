@@ -14,11 +14,13 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 
+import org.apache.commons.lang.StringUtils;
 import org.nuxeo.demo.collab.showroom.product.fake.FakeProductResource;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
 import org.nuxeo.ecm.core.api.IdRef;
+import org.nuxeo.ecm.core.api.impl.DocumentModelListImpl;
 import org.nuxeo.ecm.core.io.registry.context.DepthValues;
 import org.nuxeo.ecm.core.io.registry.context.RenderingContextImpl.RenderingContextBuilder;
 import org.nuxeo.ecm.webengine.jaxrs.coreiodelegate.RenderingContextWebUtils;
@@ -67,18 +69,31 @@ public class ShowroomApi extends ModuleRoot {
     @GET
     @Path("entries/forProducts")
     @Produces(APPLICATION_JSON)
-    public Map<Integer, List<DocumentModel>> getEntriesForProduct(
+    public Map<Integer, DocumentModelList> getEntriesForProducts(
             @QueryParam("references") List<Integer> productReferences, @Context HttpServletRequest request) {
-        CoreSession session = ctx.getCoreSession();
-        Map<Integer, List<DocumentModel>> result = new HashMap<>();
-        for (Integer ref : productReferences) {
-            String query = "SELECT * FROM Document";
-            query += " WHERE pdt:product = " + ref.intValue();
-            query += " ORDER BY dc:modified desc";
-            DocumentModelList list = session.query(query);
-            result.put(ref, list);
+
+        if (productReferences.isEmpty()) {
+            return new HashMap<Integer, DocumentModelList>();
         }
+
+        CoreSession session = ctx.getCoreSession();
+        String ids = StringUtils.join(productReferences.toArray(), ',');
+        String query = "SELECT * FROM ShowroomEntry WHERE pdt:product IN (" + ids + ") ORDER BY dc:modified desc";
+        DocumentModelList list = session.query(query);
+
+        Map<Integer, DocumentModelList> result = new HashMap<>();
+        for (DocumentModel doc : list) {
+            Integer product = ((Long) doc.getPropertyValue("pdt:product")).intValue();
+            DocumentModelList docs = result.get(product);
+            if (docs == null) {
+                docs = new DocumentModelListImpl();
+                result.put(product, docs);
+            }
+            docs.add(doc);
+        }
+
         configureOutput(request);
+
         return result;
     }
 

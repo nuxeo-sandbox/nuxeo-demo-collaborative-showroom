@@ -4,8 +4,10 @@
 <script type="text/javascript" src="${skinPath}/js/ejs.js" ></script>
 <script type="text/javascript" src="${skinPath}/js/showroom.js" ></script>
 <script type="text/javascript">
-  var ROOT = '${skinPath}';
   $(document).ready(function() {
-  	loadShowrooms('.product');
+  	$('.product').each(function() {
+  		new showroom.Showroom($(this), $(this).attr('id'));
+  	});
+  	showroom.Showrooms.initialize();
   });
 </script>

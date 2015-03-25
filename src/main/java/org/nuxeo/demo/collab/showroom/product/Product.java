@@ -10,6 +10,9 @@ public class Product {
 
     String url;
 
+    public Product() {
+    }
+
     public Product(int reference, String title, String description, String url) {
         super();
         this.reference = reference;

@@ -4,9 +4,9 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Map;
 
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
 
 import org.apache.commons.io.IOUtils;
 
@@ -27,8 +27,8 @@ public class AbstractRestResourceTest {
         return getResponseContent(path, APPLICATION_JSON);
     }
 
-    protected String getJsonResponse(String path, Map<String, String> parameters) throws IOException {
-        return getResponseContent(path, APPLICATION_JSON);
+    protected String getJsonResponse(String path, MultivaluedMap<String, String> parameters) throws IOException {
+        return getResponseContent(path, APPLICATION_JSON, parameters);
     }
 
     protected String getHtmlResponse(String path) throws IOException {
@@ -40,18 +40,16 @@ public class AbstractRestResourceTest {
         return IOUtils.toString(resp.getEntityInputStream());
     }
 
-    protected String getResponseContent(String path, String mimetype, Map<String, String> parameters)
+    protected String getResponseContent(String path, String mimetype, MultivaluedMap<String, String> parameters)
             throws IOException {
         ClientResponse resp = getResponse(path, mimetype, parameters);
         return IOUtils.toString(resp.getEntityInputStream());
     }
 
-    protected ClientResponse getResponse(String path, String mimetype, Map<String, String> parameters) {
+    protected ClientResponse getResponse(String path, String mimetype, MultivaluedMap<String, String> parameters) {
         WebResource wr = getRemoteResource();
         if (parameters != null) {
-            for (Map.Entry<String, String> parameter : parameters.entrySet()) {
-                wr = wr.queryParam(parameter.getKey(), parameter.getValue());
-            }
+            wr = wr.queryParams(parameters);
         }
         Builder builder = wr.path(path).accept(mimetype);
         ClientResponse resp = builder.get(ClientResponse.class);

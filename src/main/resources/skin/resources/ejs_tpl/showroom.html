@@ -1,7 +1,7 @@
 <div class="showroom" id="showroom_<%= product %>">
   <form enctype="multipart/form-data">
   	<h3>Contribute! Share your pictures:</h3>
-  	<input name="content" type="file" onchange="sendImageFor(<%= product %>, this.files[0]);" />
+  	<input name="content" type="file" onchange="showroom.Showrooms.store['<%=product%>'].postPicture(this.files[0]);" />
   </form>
   <div>
     <%

@@ -5,11 +5,10 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.inject.Inject;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,6 +26,7 @@ import org.nuxeo.runtime.test.runner.FeaturesRunner;
 import org.nuxeo.runtime.test.runner.Jetty;
 
 import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.core.util.MultivaluedMapImpl;
 
 @RunWith(FeaturesRunner.class)
 @Features(ServerFeature.class)
@@ -160,16 +160,20 @@ public class ShowroomApiTest extends AbstractRestResourceTest {
         postPicture("10002-1");
         createEntry(10000, "10000-1");
         postPicture("10000-1");
-        Map<String, String> parameters = new HashMap<>();
-        parameters.put("references", "10000");
-        parameters.put("references", "10001");
-        parameters.put("references", "10002");
-        parameters.put("references", "10003");
-        parameters.put("references", "10004");
-        parameters.put("references", "10005");
+        MultivaluedMap<String, String> parameters = new MultivaluedMapImpl();
+        parameters.add("references", "10000");
+        parameters.add("references", "10001");
+        parameters.add("references", "10002");
+        parameters.add("references", "10003");
+        parameters.add("references", "10004");
+        parameters.add("references", "10005");
         String entryJson = getJsonResponse("/showroom/entries/forProducts", parameters);
         JsonAssert json = JsonAssert.on(entryJson);
-        System.out.println(json);
+        json.properties(4);
+        json.has("10000").isObject().has("entries").length(1);
+        json.has("10002").isObject().has("entries").length(1);
+        json.has("10004").isObject().has("entries").length(1);
+        json.has("10005").isObject().has("entries").length(3);
     }
 
     private ClientResponse createEntry(int id, String name) throws IOException {

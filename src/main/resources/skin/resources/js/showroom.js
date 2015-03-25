@@ -1,73 +1,123 @@
-var TPL;
+// remove the suffix for parameters with multiple values
+jQuery.ajaxSettings.traditional = true;
 
-function loadShowrooms(selector) {
-	TPL  = new EJS({url: ROOT + '/ejs_tpl/showroom.html'});
-	$(selector).each(function() {
-		var product = $(this);
-		var ref = product.attr('id');
-		loadPicturesShared(product, ref);
-	});
-}
+window.showroom = window.showroom || {};
 
-function loadPicturesShared(area, ref) {
-    var url = document.location.href.replace(/\/showroom\/.*/, "/showroom/entries/forProduct/") + ref;
-	$.getJSON(url, function(data) {
-		$('.showroom', area).remove();
-		area.append(TPL.render($.extend({product:ref}, data)));
-	});
-}
+showroom.Template = new EJS({url: document.location.href.replace(/\/showroom\/.*/, "/skin/showroom/ejs_tpl/showroom.html")});
 
-function sendImageFor(product, file) {
-	var filename = file.name;
-	var batchId = "batch_" + product + '_' + Math.random();
-	var formData = new FormData();
-	formData.append("file", file);
-	navigator.geolocation.getCurrentPosition(function(position) {
-		var url = document.location.href.replace(/\/showroom\/.*/, "/automation/batch/upload");
-		$.ajax({
-	        url: url,
-	        type: 'POST',
-	        headers: {
-	        	"X-Batch-Id": batchId,
-	        	"X-File-Idx": "0",
-	        	"X-File-Name": filename
-	        },
-	        data: formData,
-	        cache: false,
-	        contentType: false,
-	        processData: false,
-	        success: function(data) {
-	        	var url = document.location.href.replace(/\/showroom\/.*/, "/api/v1/path/default-domain/workspaces/showrooms/");
-				$.ajax({
-					url: url,
-					type: 'POST',
-					contentType: "application/json",
-					dataType: 'json',
-			        headers: {
-			        	"X-NXDocumentJsonLegacy": true
-			        },
-					data: JSON.stringify({  
-					  "entity-type":"document",
-					  "name":product.toString(),
-					  "type":"ShowroomEntry",
-					  "properties": {
-					    "dc:title":"Feedback for product #" + product,
-					    "dc:nature":"article",
-					    "dc:subjects":"[\"art/photography\"]",
-					    "loc:latitude":position.coords.latitude,
-					    "loc:longitude":position.coords.longitude,
-					    "pdt:product":product,
-					    "file:content":{
-					    	"upload-batch":batchId,
-							"upload-fileId":"0"
-					    }
-					  }
-					}),
-					success: function (data) {
-						loadPicturesShared($('.product#' + product), product);
-					}
-				});
-	        }
-	    });
-	});
-}
+showroom.Showrooms = {
+	store: {},
+	initialize: function() {
+		var references = [];
+		for (var reference in showroom.Showrooms.store) {
+			if (reference != "initialize") {
+				references.push(reference);
+			}
+		}
+		var url = document.location.href.replace(/\/showroom\/.*/, "/showroom/entries/forProducts/");
+		$.getJSON(url, {references: references}, function(picturesByProduct) {
+			for (var reference in picturesByProduct) {
+				var pictures = picturesByProduct[reference];
+				showroom.Showrooms.store[reference].setPictures(pictures);
+			}
+		});
+	}
+};
+
+showroom.Showroom = function(target, reference, pictures) {
+	
+	var self = this;
+
+	self.target = target;
+	
+	self.reference = reference;
+	
+	if (pictures) {
+		self.pictures = pictures;
+	} else {
+		self.pictures = {entries:[]};
+	}
+	
+	self.refreshView = function() {
+		$('.showroom', self.target).remove();
+		self.target.append(showroom.Template.render($.extend({product:self.reference}, self.pictures)));
+	};
+
+	self.setPictures = function(pictures) {
+		if (pictures) {
+			self.pictures = pictures;
+		} else {
+			self.pictures = {entries:[]};
+		}
+		self.refreshView();
+	};
+
+	self.refreshPictures = function() {
+		var url = document.location.href.replace(/\/showroom\/.*/, "/showroom/entries/forProduct/") + self.reference;
+		$.getJSON(url, function(pictures) {
+			self.pictures = pictures;
+			self.refreshView();
+		});
+	};
+
+	self.postPicture = function(file) {
+		var filename = file.name;
+		var batchId = "batch_" + self.reference + '_' + Math.random();
+		var formData = new FormData();
+		formData.append("file", file);
+		navigator.geolocation.getCurrentPosition(function(position) {
+			var url = document.location.href.replace(/\/showroom\/.*/, "/automation/batch/upload");
+			$.ajax({
+		        url: url,
+		        type: 'POST',
+		        headers: {
+		        	"X-Batch-Id": batchId,
+		        	"X-File-Idx": "0",
+		        	"X-File-Name": filename
+		        },
+		        data: formData,
+		        cache: false,
+		        contentType: false,
+		        processData: false,
+		        success: function(data) {
+		        	var url = document.location.href.replace(/\/showroom\/.*/, "/api/v1/path/default-domain/workspaces/showrooms/");
+					$.ajax({
+						url: url,
+						type: 'POST',
+						contentType: "application/json",
+						dataType: 'json',
+				        headers: {
+				        	"X-NXDocumentJsonLegacy": true
+				        },
+						data: JSON.stringify({  
+						  "entity-type":"document",
+						  "name":self.reference.toString(),
+						  "type":"ShowroomEntry",
+						  "properties": {
+						    "dc:title":"Feedback for product #" + self.reference,
+						    "dc:nature":"article",
+						    "dc:subjects":"[\"art/photography\"]",
+						    "loc:latitude":position.coords.latitude,
+						    "loc:longitude":position.coords.longitude,
+						    "pdt:product":self.reference,
+						    "file:content":{
+						    	"upload-batch":batchId,
+								"upload-fileId":"0"
+						    }
+						  }
+						}),
+						success: function (data) {
+							self.refreshPictures();
+						}
+					});
+		        }
+		    });
+		});
+	}
+
+	self.refreshView();
+
+	showroom.Showrooms.store[self.reference] = self;
+	
+	return self;
+};
