@@ -1,8 +1,8 @@
 // load the location
 window.CustomerLocation = {
-	loaded: false;
-	latitude: 0.0;
-	longitude: 0.0;
+	loaded: false,
+	latitude: 0.0,
+	longitude: 0.0,
 };
 $(document).ready(function() {
 	if (navigator.geolocation) {
