@@ -14,7 +14,7 @@ Build it and use it
 - $ cp target/*.jar path/to/nuxeo/nxserver/bundles/
 - $ path/to/nuxeo/bin/nuxeoctl console # starts Nuxeo
 - => Go to http://localhost:8080/nuxeo/site/showroom/products (that's the fake e-commerce site)
-- => Go to https://nightly.nuxeo.com/nuxeo/nxpath/default/default-domain/workspaces/showrooms@view_documents to view the shared pictures from Nuxeo
+- => Go to http://localhost:8080/nuxeo/nxpath/default/default-domain/workspaces/showrooms@view_documents to view the shared pictures from Nuxeo
 
 To understand how it works, start with the MANIFEST.MF file and the corresponding contribs.
 
