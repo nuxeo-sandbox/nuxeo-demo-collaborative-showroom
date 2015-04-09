@@ -21,7 +21,7 @@ To understand how it works, start with the MANIFEST.MF file and the correspondin
 Contact:
 --------
 
-nc[@t]nuxeo.com : email, jabber/hangout
+nc[at]nuxeo.com : email, jabber/hangout
 
 Links:
 ------
